@@ -54,28 +54,35 @@
       return element;
     }
 
-    function openModalFor(vampire) {
+    function openModalFor(vampireElement) {
       const modal = $('<aside>').html(`
         <h1>🧛‍♀️</h1>
         <h2>New Vampire</h2>
+        <input id='phone-number'>
         <input id='new-vampire-name' />
         <button id='new-vampire-create'>Create</button>
         <button id='new-vampire-cancel'>Cancel</button>
       `);
-      const input = modal.find('#new-vampire-name');
-      modal.find('#new-vampire-cancel').on('click', () => { modal.remove() });
-      modal.find('#new-vampire-create').on('click', () => {
-        $(createVampire(input.val())).appendTo(vampire);
-        modal.remove()
+
+      const input = modal.find('#new-vampire-name')
+      const createButton = modal.find('#new-vampire-create');
+      const cancelButton = modal.find('#new-vampire-cancel');
+
+      cancelButton.on('click', function() { modal.remove() })
+      createButton.on('click', function() {
+        $(vampireElement).append(createVampire(input.val()));
+        modal.remove();
       });
-      modal.appendTo($('body'));
+
+      $('body').append(modal);
+
       input.focus();
     }
 
-    $(() => {
+    $(function() {
       $('div').on('click', function(event) {
         event.stopPropagation();
-        openModalFor($(this));
+        openModalFor(this);
       });
     });
   </script>
